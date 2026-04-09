@@ -5,7 +5,8 @@ from tqdm import tqdm
 from PyPDF2 import PdfReader, PdfWriter
 
 BASE_FOLDER = "slips"
-
+OUTPUT_FOLDER = "output"
+os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 # =========================
 # INPUT NIP
 # =========================
@@ -103,7 +104,9 @@ for nip, writer in writers.items():
 
         output_file = f"slip_{nip}_{nama}_{bulan_tag}.pdf"
 
-        with open(output_file, "wb") as f:
+        output_path = os.path.join(OUTPUT_FOLDER, output_file)
+
+        with open(output_path, "wb") as f:
             writer.write(f)
 
         hasil += 1
