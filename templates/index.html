@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIPENA - Slip Gaji ASN</title>
+    <!-- Menggunakan Bootstrap 5 dari CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Datepicker CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
+        rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+
+        .form-container {
+            max-width: 550px;
+            margin-top: 8vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container form-container">
+        <div class="card shadow border-0 rounded-3">
+            <div class="card-header bg-primary text-white text-center py-4 rounded-top-3">
+                <h3 class="mb-0 fw-bold">SIPENA</h3>
+                <p class="mb-0 text-white-50">Sistem Pengelolaan Slip Gaji ASN</p>
+            </div>
+
+            <div class="card-body p-4 p-md-5">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div class="alert alert-danger" role="alert">
+                    {{ messages[0] }}
+                </div>
+                {% endif %}
+                {% endwith %}
+
+                <div id="successAlert" class="alert alert-success d-none shadow-sm" role="alert">
+                    ✔️ Slip gaji berhasil didownload!
+                </div>
+
+                <form method="post" id="searchForm">
+                    <div class="mb-4">
+                        <label for="nip" class="form-label fw-semibold text-secondary">Nomor Induk Pegawai (NIP)</label>
+                        <input type="text" class="form-control" id="nip" name="nip" placeholder="Contoh: 19931224202511059" maxlength="18">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="bulan" class="form-label fw-semibold text-secondary">Bulan & Tahun</label>
+                        <input type="text" class="form-control" id="bulan" name="bulan" placeholder="Pilih bulan..."
+                            autocomplete="off" readonly style="background-color: white; cursor: pointer;">
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="btn btn-primary w-100 py-2 fw-bold">
+                        <span id="btnText">Proses Pencarian</span>
+                        <span id="btnLoading" class="spinner-border spinner-border-sm d-none" role="status"
+                            aria-hidden="true"></span>
+                        <span id="btnLoadingText" class="d-none ms-1">Mencari...</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery & Bootstrap Datepicker JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#bulan').datepicker({
+                format: "mm-yyyy",
+                startView: "months",
+                minViewMode: "months",
+                autoclose: true
+            }).datepicker("setDate", new Date());
+        });
+    </script>
+
+    <script>
+        // Validasi real-time untuk input NIP (Hanya angka)
+        document.getElementById('nip').addEventListener('input', function (e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        // Mencegah form disubmit jika NIP atau Bulan kosong
+        document.getElementById('searchForm').addEventListener('submit', function (e) {
+            const nipValue = document.getElementById('nip').value.trim();
+            const bulanValue = document.getElementById('bulan').value.trim();
+
+            if (!nipValue || !bulanValue) {
+                e.preventDefault(); // Menghentikan form agar tidak terkirim
+                alert('Peringatan: Kolom NIP dan Bulan tidak boleh kosong!');
+            } else {
+                // Tampilkan loading jika validasi lolos dan form dikirimkan
+                const submitBtn = document.getElementById('submitBtn');
+                const btnText = document.getElementById('btnText');
+                const btnLoading = document.getElementById('btnLoading');
+                const btnLoadingText = document.getElementById('btnLoadingText');
+
+                // Menonaktifkan tombol untuk mencegah submit berulang
+                submitBtn.disabled = true;
+
+                // Sembunyikan notifikasi error (alert-danger) sebelumnya jika ada
+                document.querySelectorAll('.alert-danger').forEach(function (el) {
+                    el.classList.add('d-none');
+                });
+
+                // Menyembunyikan teks lama dan menampilkan spinner
+                btnText.classList.add('d-none');
+                btnLoading.classList.remove('d-none');
+                btnLoadingText.classList.remove('d-none');
+
+                // Menghapus cookie lama jika ada
+                document.cookie = "download_complete=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+                // Memantau cookie untuk mendeteksi kapan download selesai
+                const checkTimer = setInterval(function () {
+                    if (document.cookie.indexOf("download_complete=1") !== -1) {
+                        clearInterval(checkTimer);
+
+                        // Kembalikan tombol ke kondisi semula
+                        submitBtn.disabled = false;
+                        btnText.classList.remove('d-none');
+                        btnLoading.classList.add('d-none');
+                        btnLoadingText.classList.add('d-none');
+
+                        // Tampilkan notifikasi sukses
+                        const successAlert = document.getElementById('successAlert');
+                        if (successAlert) {
+                            successAlert.classList.remove('d-none');
+                            setTimeout(function () {
+                                successAlert.classList.add('d-none');
+                            }, 5000); // hilangkan setelah 5 detik
+                        }
+
+                        // Hapus cookie
+                        document.cookie = "download_complete=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    }
+                }, 500);
+            }
+        });
+    </script>
+</body>
+
+</html>
