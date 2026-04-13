@@ -76,7 +76,7 @@ def index():
                                 break
 
                         if raw_nama:
-                            clean_nama = re.sub(r'[<>\:"/\\|?*]', '', raw_nama)
+                            clean_nama = re.sub(r'[<>\:"/\\|?*\n\r]', '', raw_nama)
                             names[target_nip] = clean_nama.strip()[:50]
 
                         # Eksekusi logika sensor jika saklar fitur aktif (kode logic dipisah ke sensor.py)
@@ -132,7 +132,7 @@ def index():
         response = Response(
             pdf_data,
             mimetype="application/pdf",
-            headers={"Content-Disposition": f"attachment;filename={filename}"}
+            headers={"Content-Disposition": f'attachment; filename="{filename}"'}
         )
         response.set_cookie('download_complete', '1', max_age=30)
         return response
