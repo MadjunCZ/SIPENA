@@ -73,6 +73,13 @@ def index():
                             if target_nip in line:
                                 if i >= 2:
                                     raw_nama = lines[i-2].strip()
+                                    # Periksa hingga 2 baris di atasnya kalau nama terpotong jadi beberapa baris
+                                    for j in range(i-3, max(-1, i-5), -1):
+                                        prev_line = lines[j].strip()
+                                        if prev_line and not any(c.isdigit() for c in prev_line) and "SATKER" not in prev_line.upper():
+                                            raw_nama = prev_line + " " + raw_nama
+                                        else:
+                                            break
                                 break
 
                         if raw_nama:
