@@ -1,3 +1,10 @@
 slips/
 output/
 *.pdf
+laporan_pengunduhan.xlsx
+laporan_pengunduhan.csv
+
+# Cache Python
+__pycache__/
+*.py[cod]
+*$py.class

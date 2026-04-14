@@ -1,9 +1,11 @@
 import os
 import re
+import threading
 import logging
 import fitz  # PyMuPDF
 from flask import Flask, request, render_template, send_file, flash
 from sensor import apply_sensor
+from report import log_report, poll_telegram_updates, TELEGRAM_TOKEN_SIPENA
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -23,18 +25,31 @@ def index():
     if request.method == "POST":
         nip_input = request.form.get("nip", "")
         bulan_input = request.form.get("bulan", "")
+        unit_kerja = request.form.get("unit_kerja", "")
+        unit_kerja_lainnya = request.form.get("unit_kerja_lainnya", "")
+        keperluan = request.form.get("keperluan", "")
+        keperluan_lainnya = request.form.get("keperluan_lainnya", "")
+        
+        if unit_kerja == "lainnya" and unit_kerja_lainnya:
+            unit_kerja = f"Lainnya ({unit_kerja_lainnya})"
+            
+        if keperluan == "Lainnya" and keperluan_lainnya:
+            keperluan = f"Lainnya ({keperluan_lainnya})"
 
         nips = set(re.findall(r"\d{18}", nip_input))
         bulan_list = [b.strip() for b in bulan_input.split(",") if b.strip()]
 
         if not nips:
             flash("NIP tidak valid")
+            log_report("-", unit_kerja, keperluan, nip_input, bulan_input, "Gagal (NIP tidak valid)")
             return render_template("index.html")
         if len(nips) > 1:
             flash("Hanya diperbolehkan mencari maksimal 1 NIP")
+            log_report("-", unit_kerja, keperluan, nip_input, bulan_input, "Gagal (Lebih dari 1 NIP)")
             return render_template("index.html")
         if len(bulan_list) > 1:
             flash("Hanya diperbolehkan mencari maksimal 1 Bulan")
+            log_report("-", unit_kerja, keperluan, nip_input, bulan_input, "Gagal (Lebih dari 1 Bulan)")
             return render_template("index.html")
 
         target_nip = list(nips)[0]
@@ -78,13 +93,6 @@ def index():
                             if target_nip in line:
                                 if i >= 2:
                                     raw_nama = lines[i-2].strip()
-                                    # Periksa hingga 2 baris di atasnya kalau nama terpotong jadi beberapa baris
-                                    for j in range(i-3, max(-1, i-5), -1):
-                                        prev_line = lines[j].strip()
-                                        if prev_line and not any(c.isdigit() for c in prev_line) and "SATKER" not in prev_line.upper():
-                                            raw_nama = prev_line + " " + raw_nama
-                                        else:
-                                            break
                                 break
 
                         if raw_nama:
@@ -114,6 +122,8 @@ def index():
             logging.info(f"Pencarian selesai. NIP {target_nip} tidak ditemukan.")
             flash("Tidak ditemukan")
             out_doc.close()
+            bulan = bulan_list[0] if bulan_list else "unknown"
+            log_report("-", unit_kerja, keperluan, target_nip, bulan, "Tidak Ditemukan")
             return render_template("index.html")
 
         bulan = bulan_list[0] if bulan_list else "unknown"
@@ -128,6 +138,8 @@ def index():
         logging.info(f"Pencarian selesai. Menyimpan {out_doc.page_count} halaman ke {filename}")
         out_doc.save(path)
         out_doc.close()
+        
+        log_report(nama_pegawai if nama_pegawai else "-", unit_kerja, keperluan, target_nip, bulan, "Berhasil Diunduh")
 
         # Baca file ke dalam memori agar fisiknya dapat langsung dihapus
         with open(path, "rb") as f:
@@ -152,4 +164,7 @@ def index():
     return render_template("index.html")
 
 if __name__ == "__main__":
+    if TELEGRAM_TOKEN_SIPENA:
+        t = threading.Thread(target=poll_telegram_updates, daemon=True)
+        t.start()
     app.run()

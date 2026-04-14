@@ -10,6 +10,8 @@
     <!-- Bootstrap Datepicker CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
         rel="stylesheet">
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
         body {
             background-color: #f4f6f9;
@@ -18,6 +20,19 @@
         .form-container {
             max-width: 550px;
             margin-top: 8vh;
+        }
+        
+        .select2-container .select2-selection--single {
+            height: 38.6px;
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 36.6px;
+            color: #212529;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 36.6px;
         }
     </style>
 </head>
@@ -55,6 +70,80 @@
                             autocomplete="off" readonly style="background-color: white; cursor: pointer;">
                     </div>
 
+                    <hr class="my-4 text-muted">
+                    <h6 class="fw-bold text-secondary mb-3">Identitas Pemohon</h6>
+
+                    <div class="mb-3">
+                        <label for="unit_kerja" class="form-label fw-semibold text-secondary">Unit / Satuan Kerja</label>
+                        <select class="form-control" id="unit_kerja" name="unit_kerja" required>
+                            <option value="">-- Pilih Satuan Kerja --</option>
+                            <option value="Sub Bagian Tata Usaha">Sub Bagian Tata Usaha</option>
+                            <option value="Seksi Pendidikan Agama Islam">Seksi Pendidikan Agama Islam</option>
+                            <option value="Seksi Bimbingan Masyarakat Islam">Seksi Bimbingan Masyarakat Islam</option>
+                            <option value="Seksi Pendidikan Diniyah dan Pondok Pesantren">Seksi Pendidikan Diniyah dan Pondok Pesantren</option>
+                            <option value="Seksi Pendidikan Madrasah">Seksi Pendidikan Madrasah</option>
+                            <option value="Penyelenggara Zakat dan Wakaf">Penyelenggara Zakat dan Wakaf</option>
+                            <option value="Kantor Urusan Agama Bagor">Kantor Urusan Agama Bagor</option>
+                            <option value="Kantor Urusan Agama Baron">Kantor Urusan Agama Baron</option>
+                            <option value="Kantor Urusan Agama Berbek">Kantor Urusan Agama Berbek</option>
+                            <option value="Kantor Urusan Agama Gondang">Kantor Urusan Agama Gondang</option>
+                            <option value="Kantor Urusan Agama Jatikalen">Kantor Urusan Agama Jatikalen</option>
+                            <option value="Kantor Urusan Agama Kertosono">Kantor Urusan Agama Kertosono</option>
+                            <option value="Kantor Urusan Agama Lengkong">Kantor Urusan Agama Lengkong</option>
+                            <option value="Kantor Urusan Agama Loceret">Kantor Urusan Agama Loceret</option>
+                            <option value="Kantor Urusan Agama Nganjuk">Kantor Urusan Agama Nganjuk</option>
+                            <option value="Kantor Urusan Agama Ngetos">Kantor Urusan Agama Ngetos</option>
+                            <option value="Kantor Urusan Agama Ngluyu">Kantor Urusan Agama Ngluyu</option>
+                            <option value="Kantor Urusan Agama Ngronggot">Kantor Urusan Agama Ngronggot</option>
+                            <option value="Kantor Urusan Agama Pace">Kantor Urusan Agama Pace</option>
+                            <option value="Kantor Urusan Agama Patianrowo">Kantor Urusan Agama Patianrowo</option>
+                            <option value="Kantor Urusan Agama Prambon">Kantor Urusan Agama Prambon</option>
+                            <option value="Kantor Urusan Agama Rejoso">Kantor Urusan Agama Rejoso</option>
+                            <option value="Kantor Urusan Agama Sawahan">Kantor Urusan Agama Sawahan</option>
+                            <option value="Kantor Urusan Agama Sukomoro">Kantor Urusan Agama Sukomoro</option>
+                            <option value="Kantor Urusan Agama Tanjunganom">Kantor Urusan Agama Tanjunganom</option>
+                            <option value="Kantor Urusan Agama Wilangan">Kantor Urusan Agama Wilangan</option>
+                            <option value="MAN 1 Nganjuk">MAN 1 Nganjuk</option>
+                            <option value="MAN 2 Nganjuk">MAN 2 Nganjuk</option>
+                            <option value="MAN 3 Nganjuk">MAN 3 Nganjuk</option>
+                            <option value="MIN 1 Nganjuk">MIN 1 Nganjuk</option>
+                            <option value="MIN 10 Nganjuk">MIN 10 Nganjuk</option>
+                            <option value="MIN 11 Nganjuk">MIN 11 Nganjuk</option>
+                            <option value="MIN 2 Nganjuk">MIN 2 Nganjuk</option>
+                            <option value="MIN 3 Nganjuk">MIN 3 Nganjuk</option>
+                            <option value="MIN 4 Nganjuk">MIN 4 Nganjuk</option>
+                            <option value="MIN 5 Nganjuk">MIN 5 Nganjuk</option>
+                            <option value="MIN 6 Nganjuk">MIN 6 Nganjuk</option>
+                            <option value="MIN 7 Nganjuk">MIN 7 Nganjuk</option>
+                            <option value="MIN 8 Nganjuk">MIN 8 Nganjuk</option>
+                            <option value="MIN 9 Nganjuk">MIN 9 Nganjuk</option>
+                            <option value="MTsN 1 Nganjuk">MTsN 1 Nganjuk</option>
+                            <option value="MTsN 10 Nganjuk">MTsN 10 Nganjuk</option>
+                            <option value="MTsN 2 Nganjuk">MTsN 2 Nganjuk</option>
+                            <option value="MTsN 3 Nganjuk">MTsN 3 Nganjuk</option>
+                            <option value="MTsN 4 Nganjuk">MTsN 4 Nganjuk</option>
+                            <option value="MTsN 5 Nganjuk">MTsN 5 Nganjuk</option>
+                            <option value="MTsN 6 Nganjuk">MTsN 6 Nganjuk</option>
+                            <option value="MTsN 7 Nganjuk">MTsN 7 Nganjuk</option>
+                            <option value="MTsN 8 Nganjuk">MTsN 8 Nganjuk</option>
+                            <option value="MTsN 9 Nganjuk">MTsN 9 Nganjuk</option>
+                            <option value="lainnya">Lainnya...</option>
+                        </select>
+                        <input type="text" class="form-control mt-2 d-none" id="unit_kerja_lainnya" name="unit_kerja_lainnya" placeholder="Tulis nama institusi / asal unit Anda..." maxlength="100">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="keperluan" class="form-label fw-semibold text-secondary">Kepentingan / Tujuan Unduh</label>
+                        <select class="form-select" id="keperluan" name="keperluan" required>
+                            <option value="">-- Pilih Keperluan --</option>
+                            <option value="Pengajuan Pinjaman Bank">Pengajuan Pinjaman Bank</option>
+                            <option value="Kredit / KPR">Kredit / KPR</option>
+                            <option value="Arsip Pribadi">Arsip Pribadi</option>
+                            <option value="Lainnya">Lainnya...</option>
+                        </select>
+                        <input type="text" class="form-control mt-2 d-none" id="keperluan_lainnya" name="keperluan_lainnya" placeholder="Tuliskan keperluan Anda..." maxlength="100">
+                    </div>
+
                     <button type="submit" id="submitBtn" class="btn btn-primary w-100 py-2 fw-bold">
                         <span id="btnText">Proses Pencarian</span>
                         <span id="btnLoading" class="spinner-border spinner-border-sm d-none" role="status"
@@ -70,6 +159,8 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#bulan').datepicker({
@@ -78,6 +169,11 @@
                 minViewMode: "months",
                 autoclose: true
             }).datepicker("setDate", new Date());
+
+            $('#unit_kerja').select2({
+                placeholder: "-- Pilih Satuan Kerja --",
+                width: '100%'
+            });
         });
     </script>
 
@@ -87,17 +183,66 @@
             this.value = this.value.replace(/[^0-9]/g, '');
         });
 
-        // Mencegah form disubmit jika NIP atau Bulan kosong
+        // Validasi input No WA
+        document.getElementById('no_wa').addEventListener('input', function (e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        // Kontrol input unit kerja lainnya
+        $('#unit_kerja').on('change', function (e) {
+            const freetext = document.getElementById('unit_kerja_lainnya');
+            if ($(this).val() === 'lainnya') {
+                freetext.classList.remove('d-none');
+                freetext.required = true;
+            } else {
+                freetext.classList.add('d-none');
+                freetext.required = false;
+                freetext.value = '';
+            }
+        });
+
+        // Kontrol input keperluan lainnya
+        document.getElementById('keperluan').addEventListener('change', function (e) {
+            const freetext = document.getElementById('keperluan_lainnya');
+            if (this.value === 'Lainnya') {
+                freetext.classList.remove('d-none');
+                freetext.required = true;
+            } else {
+                freetext.classList.add('d-none');
+                freetext.required = false;
+                freetext.value = '';
+            }
+        });
+
+        // Mencegah form disubmit jika ada form kosong
         document.getElementById('searchForm').addEventListener('submit', function (e) {
             const nipValue = document.getElementById('nip').value.trim();
             const bulanValue = document.getElementById('bulan').value.trim();
+            const keperluanValue = document.getElementById('keperluan').value.trim();
+            const keperluanLainnyaValue = document.getElementById('keperluan_lainnya').value.trim();
+            const unitKerjaValue = $('#unit_kerja').val();
+            const unitKerjaLainnyaValue = document.getElementById('unit_kerja_lainnya').value.trim();
 
-            if (!nipValue || !bulanValue) {
+            if (!nipValue || !bulanValue || !keperluanValue || !unitKerjaValue) {
                 e.preventDefault(); // Menghentikan form agar tidak terkirim
-                alert('Peringatan: Kolom NIP dan Bulan tidak boleh kosong!');
-            } else {
-                // Tampilkan loading jika validasi lolos dan form dikirimkan
-                const submitBtn = document.getElementById('submitBtn');
+                alert('Peringatan: Seluruh kolom instruksi pencarian dan identitas wajib diisi!');
+                return;
+            }
+            
+            if (unitKerjaValue === 'lainnya' && !unitKerjaLainnyaValue) {
+                e.preventDefault();
+                alert('Peringatan: Harap ketik detail Unit/Satuan Kerja Anda pada kolom teks yang disediakan!');
+                return;
+            }
+            
+            if (keperluanValue === 'Lainnya' && !keperluanLainnyaValue) {
+                e.preventDefault();
+                alert('Peringatan: Harap ketik keperluan spefisik Anda pada kolom teks yang disediakan!');
+                return;
+            }
+            
+            // Tampilkan loading jika validasi lolos dan form dikirimkan
+            const submitBtn = document.getElementById('submitBtn');
                 const btnText = document.getElementById('btnText');
                 const btnLoading = document.getElementById('btnLoading');
                 const btnLoadingText = document.getElementById('btnLoadingText');
@@ -142,7 +287,6 @@
                         document.cookie = "download_complete=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                     }
                 }, 500);
-            }
         });
     </script>
 </body>
