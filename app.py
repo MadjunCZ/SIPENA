@@ -28,7 +28,12 @@ os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 # Secara default fitur sensor nyala. Untuk mematikannya, set env ENABLE_SENSOR ke "False" atau "0".
 ENABLE_SENSOR = os.getenv("ENABLE_SENSOR", "True").lower() in ("true", "1", "t", "yes")
 print(f"ENABLE_SENSOR: {ENABLE_SENSOR}")
+# Konfigurasi Telegram
+TELEGRAM_TOKEN_SIPENA = os.getenv("TELEGRAM_TOKEN_SIPENA", "")
+TELEGRAM_CHAT_ID_SIPENA = os.getenv("TELEGRAM_CHAT_ID_SIPENA", "")
 
+print(TELEGRAM_TOKEN_SIPENA)
+print(TELEGRAM_CHAT_ID_SIPENA)
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
