@@ -3,6 +3,7 @@ output/
 *.pdf
 laporan_pengunduhan.xlsx
 laporan_pengunduhan.csv
+*.log
 
 # Cache Python
 __pycache__/

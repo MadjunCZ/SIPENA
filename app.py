@@ -2,12 +2,21 @@ import os
 import re
 import threading
 import logging
+
+# Konfigurasi pencatatan log (Ke Terminal & File)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("sipena_error.log", encoding="utf-8"),
+        logging.StreamHandler()
+    ]
+)
+
 import fitz  # PyMuPDF
 from flask import Flask, request, render_template, send_file, flash
 from sensor import apply_sensor
 from report import log_report, poll_telegram_updates, TELEGRAM_TOKEN_SIPENA
-
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 app = Flask(__name__)
 app.secret_key = "sipena"
