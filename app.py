@@ -57,7 +57,12 @@ def index():
 
                 pdf_path = os.path.join(folder, file)
                 logging.info(f"Membaca isi file: {file}")
-                doc = fitz.open(pdf_path)
+                
+                try:
+                    doc = fitz.open(pdf_path)
+                except Exception as e:
+                    logging.warning(f"File rusak atau kosong, dilewati ({file}): {e}")
+                    continue
 
                 for page_num in range(len(doc)):
                     page = doc[page_num]
