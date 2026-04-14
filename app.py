@@ -32,10 +32,10 @@ print(f"ENABLE_SENSOR: {ENABLE_SENSOR}")
 TELEGRAM_TOKEN_SIPENA = os.getenv("TELEGRAM_TOKEN_SIPENA", "")
 TELEGRAM_CHAT_ID_SIPENA = os.getenv("TELEGRAM_CHAT_ID_SIPENA", "")
 
-print(TELEGRAM_TOKEN_SIPENA)
-print(TELEGRAM_CHAT_ID_SIPENA)
 @app.route("/", methods=["GET", "POST"])
 def index():
+    print(TELEGRAM_TOKEN_SIPENA)
+    print(TELEGRAM_CHAT_ID_SIPENA)
     if request.method == "POST":
         nip_input = request.form.get("nip", "")
         bulan_input = request.form.get("bulan", "")
