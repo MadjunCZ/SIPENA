@@ -26,10 +26,10 @@ def apply_sensor(page, target_nip, text):
     max_y = max(semua_y)
     
     # Segala sesuatu yang letaknya di atas tinggi "Nama" orang pertama (sekitar 35pt di atas NIP pertama)
-    header_limit = min_y - 35 
+    header_limit = min_y - 30 
     
-    # Batas aman luaran bawah tabel
-    footer_limit = max_y + 5
+    # Batas aman luaran bawah tabel (diperbesar agar baris NPWP tidak luput dari sensor)
+    footer_limit = max_y + 30
 
     words = page.get_text("words")
 
