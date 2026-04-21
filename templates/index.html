@@ -21,16 +21,18 @@
             max-width: 550px;
             margin-top: 8vh;
         }
-        
+
         .select2-container .select2-selection--single {
             height: 38.6px;
             border: 1px solid #dee2e6;
             border-radius: 0.375rem;
         }
+
         .select2-container--default .select2-selection--single .select2-selection__rendered {
             line-height: 36.6px;
             color: #212529;
         }
+
         .select2-container--default .select2-selection--single .select2-selection__arrow {
             height: 36.6px;
         }
@@ -61,7 +63,8 @@
                 <form method="post" id="searchForm">
                     <div class="mb-4">
                         <label for="nip" class="form-label fw-semibold text-secondary">Nomor Induk Pegawai (NIP)</label>
-                        <input type="text" class="form-control" id="nip" name="nip" placeholder="Contoh: 19931224202511059" maxlength="18">
+                        <input type="text" class="form-control" id="nip" name="nip"
+                            placeholder="Contoh: 19931224202511059" maxlength="18">
                     </div>
 
                     <div class="mb-4">
@@ -74,13 +77,15 @@
                     <h6 class="fw-bold text-secondary mb-3">Identitas Pemohon</h6>
 
                     <div class="mb-3">
-                        <label for="unit_kerja" class="form-label fw-semibold text-secondary">Unit / Satuan Kerja</label>
+                        <label for="unit_kerja" class="form-label fw-semibold text-secondary">Unit / Satuan
+                            Kerja</label>
                         <select class="form-control" id="unit_kerja" name="unit_kerja" required>
                             <option value="">-- Pilih Satuan Kerja --</option>
                             <option value="Sub Bagian Tata Usaha">Sub Bagian Tata Usaha</option>
                             <option value="Seksi Pendidikan Agama Islam">Seksi Pendidikan Agama Islam</option>
                             <option value="Seksi Bimbingan Masyarakat Islam">Seksi Bimbingan Masyarakat Islam</option>
-                            <option value="Seksi Pendidikan Diniyah dan Pondok Pesantren">Seksi Pendidikan Diniyah dan Pondok Pesantren</option>
+                            <option value="Seksi Pendidikan Diniyah dan Pondok Pesantren">Seksi Pendidikan Diniyah dan
+                                Pondok Pesantren</option>
                             <option value="Seksi Pendidikan Madrasah">Seksi Pendidikan Madrasah</option>
                             <option value="Penyelenggara Zakat dan Wakaf">Penyelenggara Zakat dan Wakaf</option>
                             <option value="Kantor Urusan Agama Bagor">Kantor Urusan Agama Bagor</option>
@@ -129,19 +134,24 @@
                             <option value="MTsN 9 Nganjuk">MTsN 9 Nganjuk</option>
                             <option value="lainnya">Lainnya...</option>
                         </select>
-                        <input type="text" class="form-control mt-2 d-none" id="unit_kerja_lainnya" name="unit_kerja_lainnya" placeholder="Tulis nama institusi / asal unit Anda..." maxlength="100">
+                        <input type="text" class="form-control mt-2 d-none" id="unit_kerja_lainnya"
+                            name="unit_kerja_lainnya" placeholder="Tulis nama institusi / asal unit Anda..."
+                            maxlength="100">
                     </div>
 
                     <div class="mb-4">
-                        <label for="keperluan" class="form-label fw-semibold text-secondary">Kepentingan / Tujuan Unduh</label>
+                        <label for="keperluan" class="form-label fw-semibold text-secondary">Kepentingan / Tujuan
+                            Unduh</label>
                         <select class="form-select" id="keperluan" name="keperluan" required>
                             <option value="">-- Pilih Keperluan --</option>
                             <option value="Pengajuan Pinjaman Bank">Pengajuan Pinjaman Bank</option>
                             <option value="Kredit / KPR">Kredit / KPR</option>
                             <option value="Arsip Pribadi">Arsip Pribadi</option>
+                            <option value="Aktivasi BPJS">Aktivasi BPJS</option>
                             <option value="Lainnya">Lainnya...</option>
                         </select>
-                        <input type="text" class="form-control mt-2 d-none" id="keperluan_lainnya" name="keperluan_lainnya" placeholder="Tuliskan keperluan Anda..." maxlength="100">
+                        <input type="text" class="form-control mt-2 d-none" id="keperluan_lainnya"
+                            name="keperluan_lainnya" placeholder="Tuliskan keperluan Anda..." maxlength="100">
                     </div>
 
                     <button type="submit" id="submitBtn" class="btn btn-primary w-100 py-2 fw-bold">
@@ -228,65 +238,65 @@
                 alert('Peringatan: Seluruh kolom instruksi pencarian dan identitas wajib diisi!');
                 return;
             }
-            
+
             if (unitKerjaValue === 'lainnya' && !unitKerjaLainnyaValue) {
                 e.preventDefault();
                 alert('Peringatan: Harap ketik detail Unit/Satuan Kerja Anda pada kolom teks yang disediakan!');
                 return;
             }
-            
+
             if (keperluanValue === 'Lainnya' && !keperluanLainnyaValue) {
                 e.preventDefault();
                 alert('Peringatan: Harap ketik keperluan spefisik Anda pada kolom teks yang disediakan!');
                 return;
             }
-            
+
             // Tampilkan loading jika validasi lolos dan form dikirimkan
             const submitBtn = document.getElementById('submitBtn');
-                const btnText = document.getElementById('btnText');
-                const btnLoading = document.getElementById('btnLoading');
-                const btnLoadingText = document.getElementById('btnLoadingText');
+            const btnText = document.getElementById('btnText');
+            const btnLoading = document.getElementById('btnLoading');
+            const btnLoadingText = document.getElementById('btnLoadingText');
 
-                // Menonaktifkan tombol untuk mencegah submit berulang
-                submitBtn.disabled = true;
+            // Menonaktifkan tombol untuk mencegah submit berulang
+            submitBtn.disabled = true;
 
-                // Sembunyikan notifikasi error (alert-danger) sebelumnya jika ada
-                document.querySelectorAll('.alert-danger').forEach(function (el) {
-                    el.classList.add('d-none');
-                });
+            // Sembunyikan notifikasi error (alert-danger) sebelumnya jika ada
+            document.querySelectorAll('.alert-danger').forEach(function (el) {
+                el.classList.add('d-none');
+            });
 
-                // Menyembunyikan teks lama dan menampilkan spinner
-                btnText.classList.add('d-none');
-                btnLoading.classList.remove('d-none');
-                btnLoadingText.classList.remove('d-none');
+            // Menyembunyikan teks lama dan menampilkan spinner
+            btnText.classList.add('d-none');
+            btnLoading.classList.remove('d-none');
+            btnLoadingText.classList.remove('d-none');
 
-                // Menghapus cookie lama jika ada
-                document.cookie = "download_complete=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            // Menghapus cookie lama jika ada
+            document.cookie = "download_complete=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
-                // Memantau cookie untuk mendeteksi kapan download selesai
-                const checkTimer = setInterval(function () {
-                    if (document.cookie.indexOf("download_complete=1") !== -1) {
-                        clearInterval(checkTimer);
+            // Memantau cookie untuk mendeteksi kapan download selesai
+            const checkTimer = setInterval(function () {
+                if (document.cookie.indexOf("download_complete=1") !== -1) {
+                    clearInterval(checkTimer);
 
-                        // Kembalikan tombol ke kondisi semula
-                        submitBtn.disabled = false;
-                        btnText.classList.remove('d-none');
-                        btnLoading.classList.add('d-none');
-                        btnLoadingText.classList.add('d-none');
+                    // Kembalikan tombol ke kondisi semula
+                    submitBtn.disabled = false;
+                    btnText.classList.remove('d-none');
+                    btnLoading.classList.add('d-none');
+                    btnLoadingText.classList.add('d-none');
 
-                        // Tampilkan notifikasi sukses
-                        const successAlert = document.getElementById('successAlert');
-                        if (successAlert) {
-                            successAlert.classList.remove('d-none');
-                            setTimeout(function () {
-                                successAlert.classList.add('d-none');
-                            }, 5000); // hilangkan setelah 5 detik
-                        }
-
-                        // Hapus cookie
-                        document.cookie = "download_complete=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    // Tampilkan notifikasi sukses
+                    const successAlert = document.getElementById('successAlert');
+                    if (successAlert) {
+                        successAlert.classList.remove('d-none');
+                        setTimeout(function () {
+                            successAlert.classList.add('d-none');
+                        }, 5000); // hilangkan setelah 5 detik
                     }
-                }, 500);
+
+                    // Hapus cookie
+                    document.cookie = "download_complete=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                }
+            }, 500);
         });
     </script>
 </body>
