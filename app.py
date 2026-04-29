@@ -56,15 +56,15 @@ def index():
         if not nips:
             flash("NIP tidak valid")
             log_report("-", unit_kerja, keperluan, nip_input, bulan_input, "Gagal (NIP tidak valid)")
-            return render_template("index.html")
+            return render_template("index_new.html")
         if len(nips) > 1:
             flash("Hanya diperbolehkan mencari maksimal 1 NIP")
             log_report("-", unit_kerja, keperluan, nip_input, bulan_input, "Gagal (Lebih dari 1 NIP)")
-            return render_template("index.html")
+            return render_template("index_new.html")
         if len(bulan_list) > 1:
             flash("Hanya diperbolehkan mencari maksimal 1 Bulan")
             log_report("-", unit_kerja, keperluan, nip_input, bulan_input, "Gagal (Lebih dari 1 Bulan)")
-            return render_template("index.html")
+            return render_template("index_new.html")
 
         target_nip = list(nips)[0]
         out_doc = fitz.open()  # Untuk menyimpan hasil PDF baru
@@ -138,7 +138,7 @@ def index():
             out_doc.close()
             bulan = bulan_list[0] if bulan_list else "unknown"
             log_report("-", unit_kerja, keperluan, target_nip, bulan, "Tidak Ditemukan")
-            return render_template("index.html")
+            return render_template("index_new.html")
 
         bulan = bulan_list[0] if bulan_list else "unknown"
         nama_pegawai = names.get(target_nip, "")
@@ -175,7 +175,7 @@ def index():
         response.set_cookie('download_complete', '1', max_age=30)
         return response
 
-    return render_template("index.html")
+    return render_template("index_new.html")
 
 if __name__ == "__main__":
     if TELEGRAM_TOKEN_SIPENA:

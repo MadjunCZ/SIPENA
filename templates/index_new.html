@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slip Gaji Kementrian Agama Kabupaten Nganjuk</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Datepicker CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
+        rel="stylesheet">
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2E7D32;
+            --primary-dark: #1B5E20;
+            --primary-light: #A5D6A7;
+            --bg-light: #F5F5F5;
+            --text-dark: #212529;
+            --text-muted: #757575;
+            --border-color: #E0E0E0;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .navbar-custom {
+            background: white;
+            box-shadow: var(--shadow);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary) !important;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-section p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            background: white;
+            color: var(--primary);
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            color: var(--primary);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Form Card */
+        .form-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-card h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+            font-size: 0.95rem;
+        }
+
+        .form-control,
+        .form-select {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+            outline: none;
+        }
+
+        .form-divider {
+            border: none;
+            border-top: 2px solid var(--border-color);
+            margin: 2rem 0;
+        }
+
+        .form-section-title {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            padding: 0.875rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Features Section */
+        .features-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Available Slips Section */
+        .available-slips-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .available-slips-section h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .slips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+
+        .slip-badge {
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            border: 2px solid transparent;
+        }
+
+        .slip-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-dark);
+        }
+
+        .slip-badge-month {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 0.25rem;
+        }
+
+        .slip-badge-year {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .slips-info {
+            background: #E8F5E9;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            color: #1B5E20;
+        }
+
+        .slips-info strong {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Alert Messages */
+        .alert-custom {
+            border-radius: 8px;
+            border: none;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .alert-success {
+            background-color: #E8F5E9;
+            color: #1B5E20;
+        }
+
+        .alert-danger {
+            background-color: #FFEBEE;
+            color: #C62828;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer p {
+            margin: 0.5rem 0;
+            opacity: 0.9;
+        }
+
+        /* Select2 Customization */
+        .select2-container .select2-selection--single {
+            height: 42px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 40px;
+            color: var(--text-dark);
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 40px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 2.5rem 1.5rem;
+            }
+
+            .hero-section h1 {
+                font-size: 1.75rem;
+            }
+
+            .hero-section p {
+                font-size: 1rem;
+            }
+
+            .form-card {
+                padding: 1.5rem;
+            }
+
+            .features-section {
+                grid-template-columns: 1fr;
+            }
+
+            .main-container {
+                padding: 0 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-section h1 {
+                font-size: 1.5rem;
+            }
+
+            .form-card h2 {
+                font-size: 1.25rem;
+            }
+
+            .btn-submit {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header/Navbar -->
+    <nav class="navbar-custom">
+        <div class="main-container">
+            <div class="navbar-brand">
+                📄 Slip Gaji
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="main-container">
+            <h1>Unduh Slip Gaji Anda dengan Mudah</h1>
+            <p>Sistem informasi slip gaji ASN Kementerian Agama Kabupaten Nganjuk. Akses cepat, aman, dan terpercaya.</p>
+            <a href="#form-section" class="hero-cta">Mulai Sekarang</a>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Form Card -->
+        <div class="form-card" id="form-section">
+            <h2>📋 Pencarian Slip Gaji</h2>
+
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="alert alert-custom alert-danger" role="alert">
+                ⚠️ {{ messages[0] }}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            <div id="successAlert" class="alert alert-custom alert-success d-none" role="alert">
+                ✅ Slip gaji berhasil didownload!
+            </div>
+
+            <form method="post" id="searchForm">
+                <!-- Instruksi Pencarian -->
+                <div class="form-section-title">📌 Instruksi Pencarian</div>
+
+                <div class="form-group">
+                    <label for="nip" class="form-label">Nomor Induk Pegawai (NIP)</label>
+                    <input type="text" class="form-control" id="nip" name="nip"
+                        placeholder="Contoh: 19931224202511059" maxlength="18">
+                </div>
+
+                <div class="form-group">
+                    <label for="bulan" class="form-label">Bulan & Tahun</label>
+                    <input type="text" class="form-control" id="bulan" name="bulan" placeholder="Pilih bulan..."
+                        autocomplete="off" readonly style="background-color: white; cursor: pointer;">
+                </div>
+
+                <hr class="form-divider">
+
+                <!-- Identitas Pemohon -->
+                <div class="form-section-title">👤 Identitas Pemohon</div>
+
+                <div class="form-group">
+                    <label for="unit_kerja" class="form-label">Unit / Satuan Kerja</label>
+                    <select class="form-control" id="unit_kerja" name="unit_kerja" required>
+                        <option value="">-- Pilih Satuan Kerja --</option>
+                        <option value="Sub Bagian Tata Usaha">Sub Bagian Tata Usaha</option>
+                        <option value="Seksi Pendidikan Agama Islam">Seksi Pendidikan Agama Islam</option>
+                        <option value="Seksi Bimbingan Masyarakat Islam">Seksi Bimbingan Masyarakat Islam</option>
+                        <option value="Seksi Pendidikan Diniyah dan Pondok Pesantren">Seksi Pendidikan Diniyah dan Pondok Pesantren</option>
+                        <option value="Seksi Pendidikan Madrasah">Seksi Pendidikan Madrasah</option>
+                        <option value="Penyelenggara Zakat dan Wakaf">Penyelenggara Zakat dan Wakaf</option>
+                        <option value="Kantor Urusan Agama Bagor">Kantor Urusan Agama Bagor</option>
+                        <option value="Kantor Urusan Agama Baron">Kantor Urusan Agama Baron</option>
+                        <option value="Kantor Urusan Agama Berbek">Kantor Urusan Agama Berbek</option>
+                        <option value="Kantor Urusan Agama Gondang">Kantor Urusan Agama Gondang</option>
+                        <option value="Kantor Urusan Agama Jatikalen">Kantor Urusan Agama Jatikalen</option>
+                        <option value="Kantor Urusan Agama Kertosono">Kantor Urusan Agama Kertosono</option>
+                        <option value="Kantor Urusan Agama Lengkong">Kantor Urusan Agama Lengkong</option>
+                        <option value="Kantor Urusan Agama Loceret">Kantor Urusan Agama Loceret</option>
+                        <option value="Kantor Urusan Agama Nganjuk">Kantor Urusan Agama Nganjuk</option>
+                        <option value="Kantor Urusan Agama Ngetos">Kantor Urusan Agama Ngetos</option>
+                        <option value="Kantor Urusan Agama Ngluyu">Kantor Urusan Agama Ngluyu</option>
+                        <option value="Kantor Urusan Agama Ngronggot">Kantor Urusan Agama Ngronggot</option>
+                        <option value="Kantor Urusan Agama Pace">Kantor Urusan Agama Pace</option>
+                        <option value="Kantor Urusan Agama Patianrowo">Kantor Urusan Agama Patianrowo</option>
+                        <option value="Kantor Urusan Agama Prambon">Kantor Urusan Agama Prambon</option>
+                        <option value="Kantor Urusan Agama Rejoso">Kantor Urusan Agama Rejoso</option>
+                        <option value="Kantor Urusan Agama Sawahan">Kantor Urusan Agama Sawahan</option>
+                        <option value="Kantor Urusan Agama Sukomoro">Kantor Urusan Agama Sukomoro</option>
+                        <option value="Kantor Urusan Agama Tanjunganom">Kantor Urusan Agama Tanjunganom</option>
+                        <option value="Kantor Urusan Agama Wilangan">Kantor Urusan Agama Wilangan</option>
+                        <option value="MAN 1 Nganjuk">MAN 1 Nganjuk</option>
+                        <option value="MAN 2 Nganjuk">MAN 2 Nganjuk</option>
+                        <option value="MAN 3 Nganjuk">MAN 3 Nganjuk</option>
+                        <option value="MIN 1 Nganjuk">MIN 1 Nganjuk</option>
+                        <option value="MIN 10 Nganjuk">MIN 10 Nganjuk</option>
+                        <option value="MIN 11 Nganjuk">MIN 11 Nganjuk</option>
+                        <option value="MIN 2 Nganjuk">MIN 2 Nganjuk</option>
+                        <option value="MIN 3 Nganjuk">MIN 3 Nganjuk</option>
+                        <option value="MIN 4 Nganjuk">MIN 4 Nganjuk</option>
+                        <option value="MIN 5 Nganjuk">MIN 5 Nganjuk</option>
+                        <option value="MIN 6 Nganjuk">MIN 6 Nganjuk</option>
+                        <option value="MIN 7 Nganjuk">MIN 7 Nganjuk</option>
+                        <option value="MIN 8 Nganjuk">MIN 8 Nganjuk</option>
+                        <option value="MIN 9 Nganjuk">MIN 9 Nganjuk</option>
+                        <option value="MTsN 1 Nganjuk">MTsN 1 Nganjuk</option>
+                        <option value="MTsN 10 Nganjuk">MTsN 10 Nganjuk</option>
+                        <option value="MTsN 2 Nganjuk">MTsN 2 Nganjuk</option>
+                        <option value="MTsN 3 Nganjuk">MTsN 3 Nganjuk</option>
+                        <option value="MTsN 4 Nganjuk">MTsN 4 Nganjuk</option>
+                        <option value="MTsN 5 Nganjuk">MTsN 5 Nganjuk</option>
+                        <option value="MTsN 6 Nganjuk">MTsN 6 Nganjuk</option>
+                        <option value="MTsN 7 Nganjuk">MTsN 7 Nganjuk</option>
+                        <option value="MTsN 8 Nganjuk">MTsN 8 Nganjuk</option>
+                        <option value="MTsN 9 Nganjuk">MTsN 9 Nganjuk</option>
+                        <option value="lainnya">Lainnya...</option>
+                    </select>
+                    <input type="text" class="form-control mt-2 d-none" id="unit_kerja_lainnya"
+                        name="unit_kerja_lainnya" placeholder="Tulis nama institusi / asal unit Anda..."
+                        maxlength="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="keperluan" class="form-label">Kepentingan / Tujuan Unduh</label>
+                    <select class="form-select" id="keperluan" name="keperluan" required>
+                        <option value="">-- Pilih Keperluan --</option>
+                        <option value="Pengajuan Pinjaman Bank">Pengajuan Pinjaman Bank</option>
+                        <option value="Kredit / KPR">Kredit / KPR</option>
+                        <option value="Arsip Pribadi">Arsip Pribadi</option>
+                        <option value="Aktivasi BPJS">Aktivasi BPJS</option>
+                        <option value="Lainnya">Lainnya...</option>
+                    </select>
+                    <input type="text" class="form-control mt-2 d-none" id="keperluan_lainnya"
+                        name="keperluan_lainnya" placeholder="Tuliskan keperluan Anda..." maxlength="100">
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn-submit">
+                    <span id="btnText">🔍 Proses Pencarian</span>
+                    <span id="btnLoading" class="spinner-border spinner-border-sm d-none" role="status"
+                        aria-hidden="true"></span>
+                    <span id="btnLoadingText" class="d-none ms-1">Mencari...</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Available Slips Section -->
+        <div class="available-slips-section">
+            <h2>📅 Slip Gaji Tersedia</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Data slip gaji yang tersedia untuk diunduh:</p>
+
+            <!-- <div class="slips-grid" id="slipsGrid"> -->
+                <!-- Slip badges akan ditampilkan di sini -->
+            <!-- </div> -->
+
+            <div class="slips-info">
+                <strong>ℹ️ Informasi Penting:</strong>
+                Slip gaji tersedia mulai dari Januari 2026. Klik pada bulan yang ingin Anda unduh, atau gunakan form pencarian di atas untuk mencari slip gaji spesifik Anda.
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="features-section">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Cepat & Responsif</h3>
+                <p>Akses slip gaji Anda dalam hitungan detik dengan sistem yang responsif dan handal.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Aman & Terpercaya</h3>
+                <p>Data Anda dilindungi dengan enkripsi tingkat tinggi dan sistem keamanan berlapis.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Mudah Diakses</h3>
+                <p>Tersedia di semua perangkat - desktop, tablet, dan smartphone Anda.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="main-container">
+            <p><strong>Slip Gaji ASN</strong></p>
+            <p>Kementerian Agama Kabupaten Nganjuk</p>
+            <p style="margin-top: 1rem; opacity: 0.7; font-size: 0.9rem;">© 2024 Semua Hak Dilindungi</p>
+        </div>
+    </footer>
+
+    <!-- jQuery & Bootstrap Datepicker JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#bulan').datepicker({
+                format: "mm-yyyy",
+                startView: "months",
+                minViewMode: "months",
+                autoclose: true
+            }).datepicker("setDate", new Date());
+
+            $('#unit_kerja').select2({
+                placeholder: "-- Pilih Satuan Kerja --",
+                width: '100%'
+            });
+        });
+    </script>
+
+    <script>
+        // Validasi real-time untuk input NIP (Hanya angka)
+        document.getElementById('nip').addEventListener('input', function (e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        // Kontrol input unit kerja lainnya
+        $('#unit_kerja').on('change', function (e) {
+            const freetext = document.getElementById('unit_kerja_lainnya');
+            if ($(this).val() === 'lainnya') {
+                freetext.classList.remove('d-none');
+                freetext.required = true;
+            } else {
+                freetext.classList.add('d-none');
+                freetext.required = false;
+                freetext.value = '';
+            }
+        });
+
+        // Kontrol input keperluan lainnya
+        document.getElementById('keperluan').addEventListener('change', function (e) {
+            const freetext = document.getElementById('keperluan_lainnya');
+            if (this.value === 'Lainnya') {
+                freetext.classList.remove('d-none');
+                freetext.required = true;
+            } else {
+                freetext.classList.add('d-none');
+                freetext.required = false;
+                freetext.value = '';
+            }
+        });
+
+        // Mencegah form disubmit jika ada form kosong
+        document.getElementById('searchForm').addEventListener('submit', function (e) {
+            const nipValue = document.getElementById('nip').value.trim();
+            const bulanValue = document.getElementById('bulan').value.trim();
+            const keperluanValue = document.getElementById('keperluan').value.trim();
+            const keperluanLainnyaValue = document.getElementById('keperluan_lainnya').value.trim();
+            const unitKerjaValue = $('#unit_kerja').val();
+            const unitKerjaLainnyaValue = document.getElementById('unit_kerja_lainnya').value.trim();
+
+            if (!nipValue || !bulanValue || !keperluanValue || !unitKerjaValue) {
+                e.preventDefault();
+                alert('Peringatan: Seluruh kolom instruksi pencarian dan identitas wajib diisi!');
+                return;
+            }
+
+            if (unitKerjaValue === 'lainnya' && !unitKerjaLainnyaValue) {
+                e.preventDefault();
+                alert('Peringatan: Harap ketik detail Unit/Satuan Kerja Anda pada kolom teks yang disediakan!');
+                return;
+            }
+
+            if (keperluanValue === 'Lainnya' && !keperluanLainnyaValue) {
+                e.preventDefault();
+                alert('Peringatan: Harap ketik keperluan spefisik Anda pada kolom teks yang disediakan!');
+                return;
+            }
+
+            // Tampilkan loading jika validasi lolos dan form dikirimkan
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const btnLoading = document.getElementById('btnLoading');
+            const btnLoadingText = document.getElementById('btnLoadingText');
+
+            // Menonaktifkan tombol untuk mencegah submit berulang
+            submitBtn.disabled = true;
+
+            // Sembunyikan notifikasi error (alert-danger) sebelumnya jika ada
+            document.querySelectorAll('.alert-danger').forEach(function (el) {
+                el.classList.add('d-none');
+            });
+
+            // Menyembunyikan teks lama dan menampilkan spinner
+            btnText.classList.add('d-none');
+            btnLoading.classList.remove('d-none');
+            btnLoadingText.classList.remove('d-none');
+
+            // Menghapus cookie lama jika ada
+            document.cookie = "download_complete=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+            // Memantau cookie untuk mendeteksi kapan download selesai
+            const checkTimer = setInterval(function () {
+                if (document.cookie.indexOf("download_complete=1") !== -1) {
+                    clearInterval(checkTimer);
+
+                    // Kembalikan tombol ke kondisi semula
+                    submitBtn.disabled = false;
+                    btnText.classList.remove('d-none');
+                    btnLoading.classList.add('d-none');
+                    btnLoadingText.classList.add('d-none');
+
+                    // Tampilkan notifikasi sukses
+                    const successAlert = document.getElementById('successAlert');
+                    if (successAlert) {
+                        successAlert.classList.remove('d-none');
+                        setTimeout(function () {
+                            successAlert.classList.add('d-none');
+                        }, 5000);
+                    }
+
+                    // Hapus cookie
+                    document.cookie = "download_complete=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                }
+            }, 500);
+        });
+
+        // Generate Available Slips (Mulai dari Januari 2026)
+        document.addEventListener('DOMContentLoaded', function () {
+            const slipsGrid = document.getElementById('slipsGrid');
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                           'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            const currentDate = new Date();
+            const currentYear = currentDate.getFullYear();
+            const currentMonth = currentDate.getMonth();
+
+            // Generate slip gaji dari Januari 2026 hingga bulan sekarang
+            for (let year = 2026; year <= currentYear; year++) {
+                const startMonth = year === 2026 ? 0 : 0; // Mulai dari Januari
+                const endMonth = year === currentYear ? currentMonth : 11; // Hingga bulan sekarang
+
+                for (let month = startMonth; month <= endMonth; month++) {
+                    const badge = document.createElement('div');
+                    badge.className = 'slip-month-badge';
+                    badge.innerHTML = `
+                        <div class="month">${months[month]}</div>
+                        <div class="year">${year}</div>
+                    `;
+
+                    // Klik untuk set bulan di form
+                    badge.addEventListener('click', function () {
+                        const monthStr = String(month + 1).padStart(2, '0');
+                        const dateStr = `${monthStr}-${year}`;
+                        $('#bulan').datepicker('setDate', new Date(year, month, 1));
+                        document.getElementById('bulan').value = dateStr;
+
+                        // Scroll ke form
+                        document.getElementById('form-section').scrollIntoView({ behavior: 'smooth' });
+                    });
+
+                    slipsGrid.appendChild(badge);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

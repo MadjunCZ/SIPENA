@@ -1,2 +1,4 @@
 tqdm
 PyPDF2
+flask
+openpyxl
