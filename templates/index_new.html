@@ -54,7 +54,12 @@
             font-size: 1.5rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
+        }
+
+        .navbar-brand img {
+            height: 40px;
+            width: auto;
         }
 
         /* Hero Section */
@@ -370,6 +375,19 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            .navbar-custom {
+                padding: 0.75rem 0;
+            }
+
+            .navbar-brand {
+                font-size: 1.1rem;
+                gap: 0.5rem;
+            }
+
+            .navbar-brand img {
+                height: 32px;
+            }
+
             .hero-section {
                 padding: 2.5rem 1.5rem;
             }
@@ -396,6 +414,19 @@
         }
 
         @media (max-width: 480px) {
+            .navbar-custom {
+                padding: 0.5rem 0;
+            }
+
+            .navbar-brand {
+                font-size: 0.95rem;
+                gap: 0.4rem;
+            }
+
+            .navbar-brand img {
+                height: 28px;
+            }
+
             .hero-section h1 {
                 font-size: 1.5rem;
             }
@@ -417,7 +448,8 @@
     <nav class="navbar-custom">
         <div class="main-container">
             <div class="navbar-brand">
-                📄 Slip Gaji
+                <img src="https://ppid.kemenagnganjuk.id/logo-kemenag.png" alt="Logo Kemenag" class="navbar-logo">
+                <span>Slip Gaji Kementrian Agama Kabupaten Nganjuk</span>
             </div>
         </div>
     </nav>
@@ -426,7 +458,8 @@
     <section class="hero-section">
         <div class="main-container">
             <h1>Unduh Slip Gaji Anda dengan Mudah</h1>
-            <p>Sistem informasi slip gaji ASN Kementerian Agama Kabupaten Nganjuk. Akses cepat, aman, dan terpercaya.</p>
+            <p>Sistem informasi slip gaji ASN Kementerian Agama Kabupaten Nganjuk. Akses cepat, aman, dan terpercaya.
+            </p>
             <a href="#form-section" class="hero-cta">Mulai Sekarang</a>
         </div>
     </section>
@@ -455,8 +488,8 @@
 
                 <div class="form-group">
                     <label for="nip" class="form-label">Nomor Induk Pegawai (NIP)</label>
-                    <input type="text" class="form-control" id="nip" name="nip"
-                        placeholder="Contoh: 19931224202511059" maxlength="18">
+                    <input type="text" class="form-control" id="nip" name="nip" placeholder="Contoh: 19931224202511059"
+                        maxlength="18">
                 </div>
 
                 <div class="form-group">
@@ -477,7 +510,8 @@
                         <option value="Sub Bagian Tata Usaha">Sub Bagian Tata Usaha</option>
                         <option value="Seksi Pendidikan Agama Islam">Seksi Pendidikan Agama Islam</option>
                         <option value="Seksi Bimbingan Masyarakat Islam">Seksi Bimbingan Masyarakat Islam</option>
-                        <option value="Seksi Pendidikan Diniyah dan Pondok Pesantren">Seksi Pendidikan Diniyah dan Pondok Pesantren</option>
+                        <option value="Seksi Pendidikan Diniyah dan Pondok Pesantren">Seksi Pendidikan Diniyah dan
+                            Pondok Pesantren</option>
                         <option value="Seksi Pendidikan Madrasah">Seksi Pendidikan Madrasah</option>
                         <option value="Penyelenggara Zakat dan Wakaf">Penyelenggara Zakat dan Wakaf</option>
                         <option value="Kantor Urusan Agama Bagor">Kantor Urusan Agama Bagor</option>
@@ -541,8 +575,8 @@
                         <option value="Aktivasi BPJS">Aktivasi BPJS</option>
                         <option value="Lainnya">Lainnya...</option>
                     </select>
-                    <input type="text" class="form-control mt-2 d-none" id="keperluan_lainnya"
-                        name="keperluan_lainnya" placeholder="Tuliskan keperluan Anda..." maxlength="100">
+                    <input type="text" class="form-control mt-2 d-none" id="keperluan_lainnya" name="keperluan_lainnya"
+                        placeholder="Tuliskan keperluan Anda..." maxlength="100">
                 </div>
 
                 <button type="submit" id="submitBtn" class="btn-submit">
@@ -560,12 +594,13 @@
             <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Data slip gaji yang tersedia untuk diunduh:</p>
 
             <!-- <div class="slips-grid" id="slipsGrid"> -->
-                <!-- Slip badges akan ditampilkan di sini -->
+            <!-- Slip badges akan ditampilkan di sini -->
             <!-- </div> -->
 
             <div class="slips-info">
                 <strong>ℹ️ Informasi Penting:</strong>
-                Slip gaji tersedia mulai dari Januari 2026. Klik pada bulan yang ingin Anda unduh, atau gunakan form pencarian di atas untuk mencari slip gaji spesifik Anda.
+                Slip gaji tersedia mulai dari Januari 2026. Klik pada bulan yang ingin Anda unduh, atau gunakan form
+                pencarian di atas untuk mencari slip gaji spesifik Anda.
             </div>
         </div>
 
@@ -731,7 +766,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             const slipsGrid = document.getElementById('slipsGrid');
             const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-                           'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
             const currentDate = new Date();
             const currentYear = currentDate.getFullYear();
             const currentMonth = currentDate.getMonth();
