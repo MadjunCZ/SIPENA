@@ -14,12 +14,22 @@ logging.basicConfig(
 )
 
 import fitz  # PyMuPDF
-from flask import Flask, request, render_template, send_file, flash
+from flask import Flask, request, render_template, send_file, flash, jsonify
+from flask_cors import CORS
 from sensor import apply_sensor
 from report import log_report, poll_telegram_updates, TELEGRAM_TOKEN_SIPENA
+from api_helpers import (
+    require_api_key, validate_nip, validate_bulan,
+    get_satuan_kerja_list, get_keperluan_list,
+    search_slip_gaji, send_pdf_response
+)
+from slip_search import search_slip_in_folder
 
 app = Flask(__name__)
 app.secret_key = "sipena"
+
+# Enable CORS untuk API endpoints
+CORS(app)
 
 BASE_FOLDER = "slips"
 OUTPUT_FOLDER = "output"
@@ -176,6 +186,164 @@ def index():
         return response
 
     return render_template("index_new.html")
+
+
+# =============================================================================
+# API ENDPOINTS
+# =============================================================================
+
+@app.route("/api/slip", methods=["POST"])
+@require_api_key
+def api_get_slip():
+    """
+    Endpoint API untuk mengambil slip gaji
+    
+    Request Headers:
+        X-API-KEY: sipena-secret
+        Content-Type: application/json
+    
+    Request Body:
+        {
+            "nip": "198765432109876543",
+            "bulan": "2026-05",
+            "unit_kerja": "BKD",        // optional
+            "keperluan": "API"          // optional
+        }
+    
+    Response:
+        - 200: PDF file (Content-Type: application/pdf)
+        - 400: JSON error (invalid request)
+        - 401: JSON error (unauthorized)
+        - 404: JSON error (slip not found)
+        - 500: JSON error (internal error)
+    """
+    logging.info(f"API: Request slip gaji dari IP: {request.remote_addr}")
+    
+    try:
+        # Validate Content-Type
+        if not request.is_json:
+            return jsonify({
+                "success": False,
+                "message": "Content-Type harus application/json"
+            }), 400
+        
+        data = request.get_json()
+        
+        # Get parameters
+        nip = data.get("nip", "")
+        bulan = data.get("bulan", "")
+        unit_kerja = data.get("unit_kerja", "API")
+        keperluan = data.get("keperluan", "API")
+        
+        # Validate NIP
+        is_valid_nip, nip_error = validate_nip(nip)
+        if not is_valid_nip:
+            logging.warning(f"API: NIP tidak valid - {nip_error}")
+            return jsonify({
+                "success": False,
+                "message": nip_error
+            }), 400
+        
+        # Validate Bulan
+        is_valid_bulan, bulan_error = validate_bulan(bulan)
+        if not is_valid_bulan:
+            logging.warning(f"API: Bulan tidak valid - {bulan_error}")
+            return jsonify({
+                "success": False,
+                "message": bulan_error
+            }), 400
+        
+        logging.info(f"API: Mencari slip untuk NIP: {nip}, Bulan: {bulan}")
+        
+        # Search slip using helper (with sensor if enabled)
+        apply_sensor_func = apply_sensor if ENABLE_SENSOR else None
+        is_found, result, error_msg = search_slip_gaji(nip, bulan, apply_sensor_func)
+        
+        if not is_found:
+            logging.info(f"API: Slip tidak ditemukan untuk NIP: {nip}")
+            log_report("-", unit_kerja, keperluan, nip, bulan, "API - Tidak Ditemukan")
+            return jsonify({
+                "success": False,
+                "message": error_msg or "Slip gaji tidak ditemukan"
+            }), 404
+        
+        # Log success report
+        nama_pegawai = result.get("nama", "-")
+        log_report(nama_pegawai, unit_kerja, keperluan, nip, bulan, "API - Berhasil Diunduh")
+        
+        # Send PDF response
+        logging.info(f"API: Slip ditemukan, mengirim PDF: {result['filename']}")
+        return send_pdf_response(result["pdf_data"], result["filename"])
+        
+    except Exception as e:
+        logging.error(f"API: Error pada endpoint /api/slip: {str(e)}")
+        return jsonify({
+            "success": False,
+            "message": "Internal Server Error"
+        }), 500
+
+
+@app.route("/api/satuan-kerja", methods=["GET"])
+@require_api_key
+def api_satuan_kerja():
+    """
+    Endpoint API untuk mengambil daftar satuan kerja
+    
+    Request Headers:
+        X-API-KEY: sipena-secret
+    
+    Response:
+        200: {
+            "success": true,
+            "data": ["Satuan Kerja 1", "Satuan Kerja 2", ...]
+        }
+    """
+    logging.info(f"API: Request daftar satuan kerja dari IP: {request.remote_addr}")
+    
+    try:
+        satuan_kerja = get_satuan_kerja_list()
+        return jsonify({
+            "success": True,
+            "data": satuan_kerja
+        }), 200
+    except Exception as e:
+        logging.error(f"API: Error pada endpoint /api/satuan-kerja: {str(e)}")
+        return jsonify({
+            "success": False,
+            "message": "Internal Server Error"
+        }), 500
+
+
+@app.route("/api/keperluan", methods=["GET"])
+@require_api_key
+def api_keperluan():
+    """
+    Endpoint API untuk mengambil daftar keperluan
+    
+    Request Headers:
+        X-API-KEY: sipena-secret
+    
+    Response:
+        200: {
+            "success": true,
+            "data": ["Pengajuan Bank", "BPJS", "Kredit", "Administrasi", "Lainnya"]
+        }
+    """
+    logging.info(f"API: Request daftar keperluan dari IP: {request.remote_addr}")
+    
+    try:
+        keperluan = get_keperluan_list()
+        return jsonify({
+            "success": True,
+            "data": keperluan
+        }), 200
+    except Exception as e:
+        logging.error(f"API: Error pada endpoint /api/keperluan: {str(e)}")
+        return jsonify({
+            "success": False,
+            "message": "Internal Server Error"
+        }), 500
+
 
 if __name__ == "__main__":
     if TELEGRAM_TOKEN_SIPENA:

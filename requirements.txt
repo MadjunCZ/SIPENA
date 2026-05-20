@@ -2,3 +2,4 @@ tqdm
 PyPDF2
 flask
 openpyxl
+flask-cors
