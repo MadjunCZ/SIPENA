@@ -182,14 +182,18 @@ def search_slip_gaji(nip, bulan, apply_sensor_func=None):
 
 def send_pdf_response(pdf_data, filename):
     """
-    Helper untuk mengirim response PDF
+    Helper untuk mengirim response PDF dengan filename dalam JSON wrapper
     """
-    response = Response(
-        pdf_data,
-        mimetype="application/pdf",
-        headers={
-            "Content-Disposition": f'attachment; filename="{filename}"',
-            "Content-Length": str(len(pdf_data))
-        }
-    )
-    return response
+    import base64
+    
+    # Encode PDF as base64 for JSON response
+    pdf_base64 = base64.b64encode(pdf_data).decode('utf-8')
+    
+    response_data = {
+        "success": True,
+        "document": pdf_base64,
+        "filename": filename,
+        "content_type": "application/pdf"
+    }
+    
+    return jsonify(response_data), 200

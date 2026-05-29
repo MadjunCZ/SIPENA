@@ -69,8 +69,26 @@ curl -X POST http://localhost:5000/api/slip \
 **Response Berhasil:**
 
 - **HTTP Status:** `200 OK`
-- **Content-Type:** `application/pdf`
-- **Content-Disposition:** `attachment; filename="slip_gaji_{nip}_{nama}_{bulan}.pdf"`
+- **Content-Type:** `application/json`
+
+**Response Body (JSON):**
+```json
+{
+  "success": true,
+  "document": "JVBERi0xLjQK...",
+  "filename": "slip_gaji_198609012019031008_Nama_Pegawai_2026-05.pdf",
+  "content_type": "application/pdf"
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `success` | boolean | Status response |
+| `document` | string | PDF file encoded as Base64 |
+| `filename` | string | Nama file PDF untuk disimpan |
+| `content_type` | string | MIME type (`application/pdf`) |
+
+**Catatan:** Decode field `document` (Base64) untuk mendapatkan file PDF.
 
 **Response Gagal:**
 
@@ -258,6 +276,7 @@ pip install requests
 
 ```python
 import requests
+import base64
 
 url = "http://localhost:5000/api/slip"
 headers = {
@@ -274,10 +293,15 @@ data = {
 response = requests.post(url, headers=headers, json=data)
 
 if response.status_code == 200:
-    # Simpan PDF
-    with open("slip_gaji.pdf", "wb") as f:
-        f.write(response.content)
-    print("PDF berhasil diunduh")
+    result = response.json()
+    # Decode Base64 PDF
+    pdf_data = base64.b64decode(result["document"])
+    filename = result["filename"]
+    
+    # Simpan PDF dengan nama dari server
+    with open(filename, "wb") as f:
+        f.write(pdf_data)
+    print(f"PDF berhasil diunduh: {filename}")
 else:
     print(f"Error: {response.json()}")
 ```
@@ -333,7 +357,10 @@ $response = Http::withHeaders([
 ]);
 
 if ($response->successful()) {
-    Storage::put('slip_gaji.pdf', $response->body());
+    $result = $response->json();
+    $pdfData = base64_decode($result['document']);
+    $filename = $result['filename'];
+    Storage::put($filename, $pdfData);
 }
 ```
 
@@ -353,9 +380,20 @@ const response = await fetch('http://localhost:5000/api/slip', {
 });
 
 if (response.ok) {
-  const blob = await response.blob();
-  const url = window.URL.createObjectURL(blob);
-  // Download file
+  const result = await response.json();
+  // Decode Base64 to Blob
+  const pdfBlob = new Blob(
+    [Uint8Array.from(atob(result.document), c => c.charCodeAt(0))],
+    { type: 'application/pdf' }
+  );
+  const url = window.URL.createObjectURL(pdfBlob);
+  
+  // Download with correct filename
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = result.filename;
+  link.click();
+  window.URL.revokeObjectURL(url);
 }
 ```
 
@@ -375,7 +413,13 @@ final response = await http.post(
 );
 
 if (response.statusCode == 200) {
-  // Simpan atau tampilkan PDF
+  final result = jsonDecode(response.body);
+  final pdfBytes = base64Decode(result['document']);
+  final filename = result['filename'];
+  
+  // Save file using path_provider
+  final file = File('${directory.path}/$filename');
+  await file.writeAsBytes(pdfBytes);
 }
 ```
 
