@@ -24,6 +24,53 @@ def convert_api_bulan_to_folder(bulan):
     return bulan
 
 
+def extract_name_from_text(text, nip):
+    """
+    Ekstrak nama pegawai dari teks PDF di sekitar baris yang memuat NIP.
+    Cocok untuk pola nama yang terpisah menjadi beberapa baris, misalnya:
+    "MOCHAMAD MAULUDI"
+    "S.Pd.I"
+    "NIP 198301042005011003"
+    """
+    if not text or not nip:
+        return ""
+
+    lines = [line.strip() for line in text.splitlines()]
+    for idx, line in enumerate(lines):
+        if nip not in line:
+            continue
+
+        candidates = []
+        for prev_idx in range(idx - 1, max(-1, idx - 4), -1):
+            prev_line = lines[prev_idx].strip()
+            if not prev_line:
+                continue
+
+            if re.search(r"\d", prev_line):
+                continue
+
+            lowered = prev_line.lower()
+            if lowered in {"nama", "name", "pegawai", "nip"} or lowered.startswith("nama") or lowered.startswith("nip"):
+                continue
+
+            candidates.append(prev_line)
+            if len(candidates) >= 3:
+                break
+
+        if not candidates:
+            return ""
+
+        candidates = list(reversed(candidates))
+        if len(candidates) >= 2:
+            last = candidates[-1]
+            if re.fullmatch(r"[A-Za-z.\s]+", last) and "." in last and len(last.split()) <= 2:
+                return f"{' '.join(candidates[:-1])}, {last}"
+
+        return " ".join(candidates)
+
+    return ""
+
+
 def search_slip_in_folder(nip, bulan, apply_sensor_func=None):
     """
     Fungsi utama untuk mencari slip gaji berdasarkan NIP dan bulan.
@@ -75,16 +122,8 @@ def search_slip_in_folder(nip, bulan, apply_sensor_func=None):
                 
                 if nip in text:
                     logging.info(f">> Halaman {page_num+1} mengandung NIP {nip}")
-                    
-                    # Ekstrak nama (Nama berada 2 baris di atas baris yang mengandung NIP)
-                    lines = text.split('\n')
-                    raw_nama = ""
-                    for i, line in enumerate(lines):
-                        if nip in line:
-                            if i >= 2:
-                                raw_nama = lines[i-2].strip()
-                            break
-                    
+
+                    raw_nama = extract_name_from_text(text, nip)
                     if raw_nama:
                         clean_nama = re.sub(r'[<>\:"/\\|?*\n\r]', '', raw_nama)
                         names[nip] = clean_nama.strip()[:50]

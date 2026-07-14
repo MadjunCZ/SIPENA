@@ -23,7 +23,7 @@ from api_helpers import (
     get_satuan_kerja_list, get_keperluan_list,
     search_slip_gaji, send_pdf_response
 )
-from slip_search import search_slip_in_folder
+from slip_search import search_slip_in_folder, extract_name_from_text
 
 app = Flask(__name__)
 app.secret_key = "sipena"
@@ -110,15 +110,7 @@ def index():
                     if target_nip in text:
                         logging.info(f">> Halaman {page_num+1} mengandung NIP {target_nip}")
                         
-                        # Ekstrak nama (Nama berada 2 baris di atas baris yang mengandung NIP)
-                        lines = text.split('\n')
-                        raw_nama = ""
-                        for i, line in enumerate(lines):
-                            if target_nip in line:
-                                if i >= 2:
-                                    raw_nama = lines[i-2].strip()
-                                break
-
+                        raw_nama = extract_name_from_text(text, target_nip)
                         if raw_nama:
                             clean_nama = re.sub(r'[<>\:"/\\|?*\n\r]', '', raw_nama)
                             names[target_nip] = clean_nama.strip()[:50]
